@@ -1,0 +1,119 @@
+{
+  "project_name": "Badan POM Jember - Inventory & Asset Management Dashboard",
+  "theme": "Light",
+  "archetype": "4 (Swiss & High-Contrast)",
+  "emotional_tone": "Professional, authoritative, trustworthy, clear, and efficient",
+  "typography": {
+    "headings": {
+      "family": "Outfit",
+      "weights": ["600", "700"],
+      "usage": "Use for all module titles, dashboard metrics, and form headers",
+      "anti_pattern": "Do not use Inter or generic sans. Do not over-center text."
+    },
+    "body": {
+      "family": "IBM Plex Sans",
+      "weights": ["400", "500", "600"],
+      "usage": "Use for data tables, form inputs, and general text to maintain tabular clarity and technical precision"
+    },
+    "hierarchy": {
+      "h1": "text-3xl sm:text-4xl tracking-tight leading-none",
+      "h2": "text-2xl sm:text-3xl tracking-tight",
+      "h3": "text-xl sm:text-2xl",
+      "body": "text-base",
+      "small": "text-sm",
+      "overline": "text-xs uppercase tracking-[0.2em]"
+    }
+  },
+  "colors": {
+    "primary": {
+      "name": "Government Navy",
+      "value": "#1E3A8A",
+      "tailwind": "blue-900",
+      "usage": "Primary CTAs, sidebar backgrounds, active states, official headers"
+    },
+    "secondary": {
+      "name": "Signal Red",
+      "value": "#DC2626",
+      "tailwind": "red-600",
+      "usage": "Alerts, low stock warnings, Indonesian identity accent, destructive actions"
+    },
+    "background": {
+      "name": "Tinted Slate",
+      "value": "#F8FAFC",
+      "tailwind": "slate-50",
+      "usage": "Main application background"
+    },
+    "surface": {
+      "name": "Pure White",
+      "value": "#FFFFFF",
+      "tailwind": "white",
+      "usage": "Cards, forms, table containers"
+    },
+    "text": {
+      "primary": "text-slate-900",
+      "secondary": "text-slate-600",
+      "muted": "text-slate-400"
+    },
+    "borders": "border-slate-200",
+    "forbidden_colors": ["#1B93A4 (Teal Green/Blue)", "#9D4CDD (Purple)", "#000000 (Pure Black)"]
+  },
+  "layout_and_spacing": {
+    "grid_system": "MODE B: THE CONTROL ROOM GRID",
+    "dashboard_grid": "grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6",
+    "spacing_scale": "p-4, p-6, p-8. Containers with borders must have internal padding (p-6 or p-8) to prevent text collision.",
+    "alignment": "Left-align dense content, tables, and forms. Center only for empty states or specific modal dialogs.",
+    "surface_strategy": "Flat Solid. Avoid Glassmorphism for data clarity. Dashboards use flat white backgrounds with 1px subtle borders (border-slate-200) and no default shadow."
+  },
+  "components": {
+    "cards": "Flat background, 1px subtle border, rounded-lg. On hover: slight lift (-translate-y-1) and subtle shadow (shadow-sm).",
+    "tables": "Dense, high-contrast headers. Alternating row colors (bg-slate-50/50) or clear border-b for readability.",
+    "buttons": "Primary: bg-blue-900 text-white hover:bg-blue-800. Danger: bg-red-600 text-white hover:bg-red-700. Secondary: border border-slate-200 text-slate-900 hover:bg-slate-50.",
+    "forms": "Use Shadcn Form components. Left-aligned labels. Explicit focus states (focus:ring-2 focus:ring-blue-900).",
+    "mobile_scanner": "Module 9 (QR Scan) must be mobile-first. Large touch targets (min-h-[48px] for buttons). High contrast camera overlay. Bottom sheet for scan results."
+  },
+  "icons": {
+    "library": "@phosphor-icons/react",
+    "installation": "yarn add @phosphor-icons/react lucide-react",
+    "usage": "Use Phosphor Icons for dense dashboard navigation and actions. Keep strokes consistent (Regular or Bold weight depending on active state)."
+  },
+  "motion": {
+    "transitions": "Use specific properties. Example: transition: transform 0.2s ease, opacity 0.2s ease. No 'transition-all'.",
+    "hover_states": "All interactive elements must have visible hover and focus states.",
+    "page_load": "Staggered fade-in for dashboard grid items."
+  },
+  "accessibility": {
+    "contrast": "Ensure minimum 4.5:1 ratio for standard text. Never use text-slate-400 on white for critical data.",
+    "focus": "focus:ring-2 focus:ring-offset-2 focus:ring-blue-900",
+    "aria": "Include aria-labels for all icon-only buttons."
+  },
+  "testing": {
+    "attributes": "All interactive and key informational elements MUST include a 'data-testid' attribute.",
+    "convention": "kebab-case, role-based. Examples: data-testid='login-submit-button', data-testid='inventory-table-row', data-testid='spb-request-form'."
+  },
+  "media_urls": [
+    {
+      "category": "hero_background",
+      "url": "https://images.unsplash.com/photo-1672552226380-486fe900b322?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjh8MHwxfHNlYXJjaHwzfHx3YXJlaG91c2UlMjBpbnZlbnRvcnklMjBzY2FubmVyfGVufDB8fHx8MTc4MTc1MDMwN3ww&ixlib=rb-4.1.0&q=85",
+      "description": "Warehouse filled with boxes. Use with a heavy white/blue overlay (bg-white/80 or bg-blue-900/90) as a subtle background texture for the public SPB request portal or login screen."
+    },
+    {
+      "category": "onboarding_mobile",
+      "url": "https://images.unsplash.com/photo-1664382953403-fc1ac77073a0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjh8MHwxfHNlYXJjaHwyfHx3YXJlaG91c2UlMjBpbnZlbnRvcnklMjBzY2FubmVyfGVufDB8fHx8MTc4MTc1MDMwN3ww&ixlib=rb-4.1.0&q=85",
+      "description": "Staff in warehouse holding scanner. Use for the mobile app landing/welcome screen or documentation sections."
+    },
+    {
+      "category": "agency_context",
+      "url": "https://images.unsplash.com/photo-1629333574602-00d8e5dee681?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHwyfHxnb3Zlcm5tZW50JTIwb2ZmaWNlJTIwYnVpbGRpbmd8ZW58MHx8fHwxNzgxNzUwMzA3fDA&ixlib=rb-4.1.0&q=85",
+      "description": "Government building. Use as contextual image for the official SBBK/SPB print headers or about page."
+    }
+  ],
+  "instructions_to_main_agent": {
+    "tech_stack": "React.js (.js files ONLY, NO .tsx), Tailwind CSS, Shadcn UI, Recharts.",
+    "module_1": "Dashboard must prioritize Low Stock and Expiring Goods as the 'North Star' top-left metrics. Use Pie chart for Asset Condition.",
+    "module_4_and_9": "SPB Request Form (Mod 4) and Mobile Scanner (Mod 9) must be extremely mobile-responsive. Use Shadcn Form elements with large touch areas.",
+    "module_6": "PDF Generation must include an official 'Badan POM Jember' letterhead format. Simulate this with standard HTML/CSS layout styled for print (e.g., @media print).",
+    "development_rules": "Always write .js components. Provide purely pure HTML + Tailwind for structural layouts, heavily customized Shadcn for forms/dialogs. Add data-testid to EVERY button, input, and table row.",
+    "fonts": "Import Outfit and IBM Plex Sans from Google Fonts in index.css.",
+    "auth": "Implement Google Auth UI components with professional styling matching the agency."
+  }
+}
