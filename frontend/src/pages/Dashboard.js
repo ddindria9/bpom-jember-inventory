@@ -27,7 +27,10 @@ export default function Dashboard() {
     try {
       const { data } = await api.get("/dashboard/stats");
       setStats(data);
-    } catch (e) { toast.error("Gagal memuat dashboard"); }
+    } catch (e) { 
+      toast.error("Gagal memuat dashboard");
+      setStats({}); // set ke object kosong agar tidak crash
+    }
   };
 
   useEffect(() => { load(); }, []);
@@ -39,8 +42,19 @@ export default function Dashboard() {
 
   if (!stats) return <div className="text-slate-500">Memuat...</div>;
 
-  const kondisiData = Object.entries(stats.kondisi_counts).map(([k, v]) => ({ name: k.replace("_", " "), value: v, key: k }));
+  // 🔥 PERBAIKAN UTAMA: guard untuk kondisi_counts
+  const kondisiData = stats.kondisi_counts 
+    ? Object.entries(stats.kondisi_counts).map(([k, v]) => ({ name: k.replace("_", " "), value: v, key: k })) 
+    : [];
   const totalAssets = kondisiData.reduce((s, x) => s + x.value, 0);
+
+  // Guard untuk properti lainnya
+  const lowStockCount = stats.low_stock_count ?? 0;
+  const pendingSpb = stats.pending_spb ?? 0;
+  const totalNilai = stats.total_nilai ?? 0;
+  const totalItems = stats.total_items ?? 0;
+  const lowStockItems = stats.low_stock_items ?? [];
+  const expiringItems = stats.expiring ?? [];
 
   return (
     <div className="space-y-6">
@@ -49,16 +63,16 @@ export default function Dashboard() {
           <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Ringkasan Operasional</div>
           <h1 className="font-display text-3xl sm:text-4xl text-slate-900 mt-1">Dashboard Inventory</h1>
         </div>
-        {stats.total_items === 0 && (
+        {totalItems === 0 && (
           <Button data-testid="dashboard-seed-button" onClick={seed} className="bg-[#1E3A8A] hover:bg-[#1E2A6B]">Isi Data Contoh</Button>
         )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Stat testid="stat-low-stock" icon={AlertTriangle} accent="text-red-600" label="Stok Menipis" value={stats.low_stock_count} />
-        <Stat testid="stat-pending-spb" icon={Inbox} accent="text-amber-500" label="Permintaan Menunggu" value={stats.pending_spb} />
-        <Stat testid="stat-total-value" icon={Wallet} accent="text-emerald-600" label="Nilai Persediaan" value={fmtIDR(stats.total_nilai)} />
-        <Stat testid="stat-total-assets" icon={Box} accent="text-[#1E3A8A]" label="Total Aset BMN" value={stats.total_assets} />
+        <Stat testid="stat-low-stock" icon={AlertTriangle} accent="text-red-600" label="Stok Menipis" value={lowStockCount} />
+        <Stat testid="stat-pending-spb" icon={Inbox} accent="text-amber-500" label="Permintaan Menunggu" value={pendingSpb} />
+        <Stat testid="stat-total-value" icon={Wallet} accent="text-emerald-600" label="Nilai Persediaan" value={fmtIDR(totalNilai)} />
+        <Stat testid="stat-total-assets" icon={Box} accent="text-[#1E3A8A]" label="Total Aset BMN" value={totalAssets} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -68,7 +82,7 @@ export default function Dashboard() {
             <h3 className="font-display text-lg">Stok di bawah minimum</h3>
             <Link to="/master" className="text-xs text-[#1E3A8A] hover:underline">Lihat semua →</Link>
           </div>
-          {stats.low_stock_items.length === 0 ? (
+          {lowStockItems.length === 0 ? (
             <div className="text-sm text-slate-500 mt-6">Tidak ada barang dengan stok menipis. 🟢</div>
           ) : (
             <div className="mt-4 overflow-x-auto">
@@ -77,7 +91,7 @@ export default function Dashboard() {
                   <tr><th className="text-left py-2">Kode</th><th className="text-left">Nama</th><th className="text-right">Stok</th><th className="text-right">Min</th></tr>
                 </thead>
                 <tbody>
-                  {stats.low_stock_items.map((it) => (
+                  {lowStockItems.map((it) => (
                     <tr key={it.id} className="border-b border-slate-100">
                       <td className="py-2 font-mono-data text-xs">{it.kode}</td>
                       <td>{it.nama}</td>
@@ -116,7 +130,7 @@ export default function Dashboard() {
       {/* Expiring */}
       <div className="bg-white border border-slate-200 rounded-lg p-5">
         <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-red-600" /><h3 className="font-display text-lg">Reagen Mendekati Kadaluarsa</h3></div>
-        {stats.expiring.length === 0 ? (
+        {expiringItems.length === 0 ? (
           <div className="text-sm text-slate-500 mt-4">Tidak ada reagen yang akan kadaluarsa dalam 90 hari.</div>
         ) : (
           <div className="mt-3 overflow-x-auto">
@@ -125,7 +139,7 @@ export default function Dashboard() {
                 <tr><th className="text-left py-2">Kode</th><th className="text-left">Nama Reagen</th><th className="text-left">Kadaluarsa</th><th className="text-right">Sisa Hari</th></tr>
               </thead>
               <tbody>
-                {stats.expiring.map((it) => (
+                {expiringItems.map((it) => (
                   <tr key={it.id} className="border-b border-slate-100">
                     <td className="py-2 font-mono-data text-xs">{it.kode}</td>
                     <td>{it.nama}</td>
